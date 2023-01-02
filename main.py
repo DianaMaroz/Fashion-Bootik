@@ -1,9 +1,16 @@
 from aiogram.utils import executor
 from handlers import dp
+from data_base.SQLite import check_connection, create_table
 
 
 async def on_startup(_):
     print('Бот запущен')
+    try:
+        check_connection()
+        print('Подключение к БД успешное!')
+    except:
+        print('Ошибка БД')
+
 
 
 if __name__ == '__main__':

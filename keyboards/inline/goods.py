@@ -1,12 +1,13 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from .callback import menu_data, navi_goods
 from data_base.db_variable import db_var
+from data_base.SQLite import get_item
 
 def create_goods_menu(cur_id: int, item: str):
-    goods = []
-    for product in db_var.values():
-        if product.get('type') == item:
-            goods.append(item)
+    goods = get_item(item)
+    # for product in db_var.values():
+    #     if product.get('type') == item:
+    #         goods.append(item)
     # for i in goods:
     #     print(i)
     current_id = cur_id
