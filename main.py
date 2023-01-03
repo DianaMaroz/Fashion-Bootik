@@ -1,6 +1,6 @@
 from aiogram.utils import executor
 from handlers import dp
-from data_base.SQLite import check_connection, create_table
+from data_base.SQLite import check_connection
 
 
 async def on_startup(_):

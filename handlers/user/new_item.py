@@ -7,4 +7,5 @@ from keyboards import kb_main_menu, navi_goods
 
 @dp.message_handler(commands=['new'])
 async def com_start(message: Message):
-    print(get_item('shoes'))
+    for good in db_var:
+        new_item(db_var.get(good))
