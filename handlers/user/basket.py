@@ -9,17 +9,9 @@ from keyboards import create_basket_kb
 async def navi_goods(call: CallbackQuery):
     id_user = call.from_user.id
     id_goods = int(call.data.split(":")[-3])
-    # current_id = int(call.data.split(':')[-1])
-    # current_item = call.data.split(':')[-2]
-    # cur_product = get_item(current_item)
-    # photo = InputFile(path_or_bytesio=cur_product[current_id][2])
-    # current_chat_id = call.message.chat.id
-    # current_message_id = call.message.message_id
-    # caption = f"{cur_product[current_id][3]}\n{cur_product[current_id][4]}\n\n" \
-    #           f"Стоимость: {cur_product[current_id][6]}"
-    add_to_basket(id_user, id_goods)
     if set_count(id_goods, -1):
         await call.answer(f'Товар {id_goods} добавлен в корзину')
+        add_to_basket(id_user, id_goods)
     else:
         await call.answer(f'Извините, но товара нет в наличии', show_alert=True)
 
@@ -36,7 +28,7 @@ async def navi_goods(call: CallbackQuery):
             goods_id = int(my_basket[i][-1])
             goods = get_by_id(goods_id)
             content_basket += f'{i+1}. {goods[3]}\n'
-            total += int(goods[-1])
+            total += float(goods[-1])
         content_basket += f'Общая сумма: {total} рублей'
     else:
         content_basket += 'Пусто'

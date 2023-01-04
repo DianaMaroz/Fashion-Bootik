@@ -9,12 +9,10 @@ from keyboards import create_basket_kb
 @dp.callback_query_handler(navi_goods.filter(menu='remove'))
 async def navi_goods(call: CallbackQuery):
     id_user = call.from_user.id
-    print(call.data)
     id_goods = int(call.data.split(":")[-1])
     await call.answer(f'Товар {id_goods} удален из корзины')
     set_count(id_goods, 1)
     remove_from_basket(id_user, id_goods)
-    id_user = call.from_user.id
     current_message_id = call.message.message_id
     my_basket = get_basket(id_user)
     content_basket = 'Содержимое вашей корзины:\n'

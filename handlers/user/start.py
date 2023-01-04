@@ -26,3 +26,8 @@ async def com_start(message: Message):
                             photo=photo,
                             caption=f'{name}, добро пожаловать в онлайн бутик!',
                             reply_markup=kb_main_menu)
+
+
+@dp.message_handler(commands=['me'])
+async def my_id(message: Message):
+    await message.answer(text=message.from_user.id)

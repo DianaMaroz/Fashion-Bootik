@@ -4,6 +4,7 @@ from data_base.SQLite import new_item
 from loader import dp
 from aiogram.types import Message
 from keyboards import kb_g_type
+from config import admin
 
 
 
@@ -19,8 +20,16 @@ class NewGoodsItem(StatesGroup):
 
 @dp.message_handler(commands=['add'], state=None)
 async def add_catch(message: Message):
-    await message.answer('Введите название товара')
-    await NewGoodsItem.name.set()
+    access = False
+    for user_id in admin:
+        if message.from_user.id == user_id:
+            access = True
+            break
+    if access:
+        await message.answer('Введите название товара')
+        await NewGoodsItem.name.set()
+    else:
+        await message.answer('Извините, у вас нет доступа к этой команде')
 
 @dp.message_handler(state=NewGoodsItem.name)
 async def name_catch(message: Message, state: FSMContext):
@@ -65,4 +74,5 @@ async def price_catch(message: Message, state: FSMContext):
         await message.answer(f'Товар {data.get("name")} добавлен!')
     except:
         await message.answer(f'Ошибка! добавления товара! Проверьте правильность вводимых данных')
+    await state.reset_data()
     await state.finish()

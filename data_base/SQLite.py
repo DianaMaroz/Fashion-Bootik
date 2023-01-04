@@ -33,7 +33,7 @@ def new_item(item: dict):
 def get_item(g_type: str):
     global conn
     global cur
-    get = ('''SELECT * FROM goods WHERE g_type=?''')
+    get = (f'SELECT * FROM goods WHERE g_type=?')
     result = cur.execute(get, (g_type, )).fetchall()
     conn.commit()
     return result
@@ -41,7 +41,7 @@ def get_item(g_type: str):
 def get_by_id(g_id: int):
     global conn
     global cur
-    get = ('''SELECT * FROM goods WHERE id=?''')
+    get = ('SELECT * FROM goods WHERE id=?')
     result = cur.execute(get, (g_id, )).fetchone()
     conn.commit()
     return result
