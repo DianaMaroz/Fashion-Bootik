@@ -10,7 +10,10 @@ async def navi_goods(call: CallbackQuery):
     current_item = call.data.split(':')[-2]
     cur_product = get_item(current_item)
     goods_id = int(cur_product[current_id][0])
-    photo = InputFile(path_or_bytesio=cur_product[current_id][2])
+    if str(cur_product[current_id][2]).startswith('A'):
+        photo = str(cur_product[current_id][2])
+    else:
+        photo = InputFile(path_or_bytesio=cur_product[current_id][2])
     current_chat_id = call.message.chat.id
     current_message_id = call.message.message_id
     caption = f"{cur_product[current_id][3]}\n{cur_product[current_id][4]}\n\n" \

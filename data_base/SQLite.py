@@ -22,8 +22,8 @@ def create_goods_table():
 def new_item(item: dict):
     global conn
     global cur
-    goods = (item.get('type'), item.get('image'), item.get('name'),
-             item.get('description'), item.get('quantity'), item.get('price'))
+    goods = (item.get('g_type'), item.get('image'), item.get('name'),
+             item.get('desc'), item.get('quantity'), item.get('price'))
     print(goods)
     new_item = '''INSERT INTO goods (g_type, image, name, desc,
     quantity, price) VALUES (?, ?, ?, ?, ?, ?)'''
