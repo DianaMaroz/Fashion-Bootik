@@ -54,6 +54,12 @@ class DataBase:
         sql, parameters = self.extract_kwargs(sql, kwargs)
         return self.execute(sql, parameters, fetchall=True)
 
+    def remove_from_basket(self, **kwargs):
+        sql = '''SELECT * FROM basket WHERE '''
+        sql, parameters = self.extract_kwargs(sql, kwargs)
+        return self.execute(sql, parameters, fetchall=True)
+
+
     def set_count(self, id_item: int, increase: bool):
         if increase:
             sql = '''UPDATE goods SET quantity = quantity + 1 WHERE id=?'''

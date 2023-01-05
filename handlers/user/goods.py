@@ -1,7 +1,7 @@
 from loader import dp, db
 from aiogram.types import CallbackQuery, Message, InputFile, InputMediaPhoto, InputMedia
 from keyboards import kb_main_menu, main_menu, create_goods_menu
-from data_base.SQLite import get_item
+# from data_base.SQLite import get_item
 
 
 @dp.callback_query_handler(main_menu.filter(menu='main'))
