@@ -1,12 +1,12 @@
 from loader import dp
 from aiogram.types import CallbackQuery, Message, InputFile, InputMediaPhoto, InputMedia
-from keyboards import kb_main_menu, menu_data, navi_goods, create_goods_menu
+from keyboards import kb_main_menu, main_menu, navigation, create_goods_menu
 from data_base.SQLite import get_item, add_to_basket, set_count, get_basket, get_by_id, remove_from_basket
 from keyboards import create_basket_kb
 
 
 
-@dp.callback_query_handler(navi_goods.filter(menu='remove'))
+@dp.callback_query_handler(navigation.filter(menu='remove'))
 async def navi_goods(call: CallbackQuery):
     id_user = call.from_user.id
     id_goods = int(call.data.split(":")[-1])

@@ -1,14 +1,15 @@
-from loader import dp
+from loader import dp, db
 from aiogram.types import CallbackQuery, Message, InputFile, InputMediaPhoto, InputMedia
-from keyboards import kb_main_menu, menu_data, navi_goods, create_goods_menu
-from data_base.SQLite import get_item
+from keyboards import kb_main_menu, main_menu, navigation, create_goods_menu
+# from data_base.SQLite import get_item
 
 
-@dp.callback_query_handler(navi_goods.filter(menu='goods'))
+@dp.callback_query_handler(navigation.filter(menu='goods'))
 async def navi_goods(call: CallbackQuery):
     current_id = int(call.data.split(':')[-1])
     current_item = call.data.split(':')[-2]
-    cur_product = get_item(current_item)
+    # cur_product = get_item(current_item)
+    cur_product = db.get_goods(g_type=current_item)
     goods_id = int(cur_product[current_id][0])
     if str(cur_product[current_id][2]).startswith('A'):
         photo = str(cur_product[current_id][2])

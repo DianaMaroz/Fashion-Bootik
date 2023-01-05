@@ -1,6 +1,6 @@
 from aiogram.utils.callback_data import CallbackData
 
 
-menu_data = CallbackData('menu_data', 'menu', 'item')
+main_menu = CallbackData('Main menu', 'menu', 'item')
 
-navi_goods = CallbackData('Goods Navigation', 'menu', 'user_id', 'goods_id', 'item', 'id')
+navigation = CallbackData('Navigation', 'menu', 'user_id', 'goods_id', 'item', 'id')

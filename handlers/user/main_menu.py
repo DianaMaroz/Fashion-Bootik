@@ -1,9 +1,9 @@
 from loader import dp
 from aiogram.types import Message, InputFile, CallbackQuery, InputMediaPhoto, InputMedia
-from keyboards import kb_main_menu, navi_goods
+from keyboards import kb_main_menu, navigation, main_menu
 
 
-@dp.callback_query_handler(navi_goods.filter(menu='back'))
+@dp.callback_query_handler(main_menu.filter(menu='back'))
 async def com_start(call: CallbackQuery):
     photo = InputFile('images/logo.png')
     name = call.message.from_user.full_name
@@ -26,8 +26,3 @@ async def com_start(message: Message):
                             photo=photo,
                             caption=f'{name}, добро пожаловать в онлайн бутик!',
                             reply_markup=kb_main_menu)
-
-
-@dp.message_handler(commands=['me'])
-async def my_id(message: Message):
-    await message.answer(text=message.from_user.id)
