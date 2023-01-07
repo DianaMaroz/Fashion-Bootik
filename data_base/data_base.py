@@ -54,11 +54,21 @@ class DataBase:
         sql, parameters = self.extract_kwargs(sql, kwargs)
         return self.execute(sql, parameters, fetchall=True)
 
-    def remove_from_basket(self, **kwargs):
-        sql = '''SELECT * FROM basket WHERE '''
-        sql, parameters = self.extract_kwargs(sql, kwargs)
-        return self.execute(sql, parameters, fetchall=True)
+    def add_to_basket(self, id_user: int, id_goods: int):
+        parameters = (id_user, id_goods)
+        sql = '''INSERT INTO basket (id_user, id_good) VALUES (?, ?)'''
+        self.execute(sql, parameters, commit=True)
+        parameters = (id_goods,)
+        sql = '''UPDATE goods SET quantity = quantity - 1 WHERE id=?'''
+        self.execute(sql, parameters, commit=True)
 
+    def remove_from_basket(self, id_order: int, id_goods: int):
+        parameters = (id_order,)
+        sql = '''DELETE FROM basket WHERE id_order=?'''
+        self.execute(sql, parameters, commit=True)
+        parameters = (id_goods,)
+        sql = '''UPDATE goods SET quantity = quantity + 1 WHERE id=?'''
+        self.execute(sql, parameters, commit=True)
 
     def set_count(self, id_item: int, increase: bool):
         if increase:

@@ -1,11 +1,11 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from .callback import main_menu, navigation
 from loader import db
-# from data_base.SQLite import get_item, get_by_id
+
 
 def create_goods_menu(current_id: int, item: str, goods_id: int):
     goods = db.get_goods(g_type=item)
-    # current_id = cur_id
+    id_goods = goods[current_id][0]
     next_id = current_id + 1
     prev_id = current_id - 1
     product = db.get_goods(id=current_id)
@@ -16,20 +16,20 @@ def create_goods_menu(current_id: int, item: str, goods_id: int):
     kb_goods = InlineKeyboardMarkup(row_width=1)
 
     btn_buy = InlineKeyboardButton(text='В корзину',
-                                  callback_data=navigation.new(
-                                      menu='basket', user_id='0',
-                                      goods_id=goods_id, item=item,
-                                      id=current_id))
+                                   callback_data=navigation.new(
+                                       menu='basket', user_id='0',
+                                       goods_id=goods_id, item=item,
+                                       id=id_goods))
     btn_prev = InlineKeyboardButton(text='<<<',
-                                   callback_data=navigation.new(
-                                       menu='goods', user_id='0',
-                                       goods_id='0', item=item,
-                                       id=prev_id))
+                                    callback_data=navigation.new(
+                                        menu='goods', user_id='0',
+                                        goods_id='0', item=item,
+                                        id=prev_id))
     btn_next = InlineKeyboardButton(text='>>>',
-                                   callback_data=navigation.new(
-                                       menu='goods', user_id='0',
-                                       goods_id='0', item=item,
-                                       id=next_id))
+                                    callback_data=navigation.new(
+                                        menu='goods', user_id='0',
+                                        goods_id='0', item=item,
+                                        id=next_id))
     btn_back = InlineKeyboardButton(text='Назад в главное меню',
                                     callback_data=main_menu.new(
                                         menu='back', item=''))

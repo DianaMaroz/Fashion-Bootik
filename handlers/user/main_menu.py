@@ -1,12 +1,13 @@
+from aiogram.types import Message, InputFile, CallbackQuery, InputMediaPhoto
+
+from keyboards import kb_main_menu, main_menu
 from loader import dp
-from aiogram.types import Message, InputFile, CallbackQuery, InputMediaPhoto, InputMedia
-from keyboards import kb_main_menu, navigation, main_menu
 
 
 @dp.callback_query_handler(main_menu.filter(menu='back'))
 async def com_start(call: CallbackQuery):
     photo = InputFile('images/logo.png')
-    name = call.message.from_user.full_name
+    name = call.message.chat.id
     current_chat_id = call.message.chat.id
     current_message_id = call.message.message_id
     caption = f'{name}, добро пожаловать в онлайн бутик!'
