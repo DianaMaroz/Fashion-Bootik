@@ -6,7 +6,7 @@ from aiogram.dispatcher.filters.state import StatesGroup, State
 from loader import dp, db
 from aiogram.types import Message
 from keyboards import kb_g_type
-from config import admin
+from config import admins
 
 
 class NewGoodsItem(StatesGroup):
@@ -21,7 +21,7 @@ class NewGoodsItem(StatesGroup):
 @dp.message_handler(commands=['add'], state=None)
 async def add_catch(message: Message):
     access = False
-    for user_id in admin:
+    for user_id in admins:
         if message.from_user.id == user_id:
             access = True
             break

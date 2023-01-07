@@ -34,7 +34,14 @@ class DataBase:
     def create_table_basket(self):
         sql = '''CREATE TABLE IF NOT EXISTS basket 
         (id_order INTEGER PRIMARY KEY AUTOINCREMENT,
-        id_user INTEGER, id_good INTEGER)'''
+        id_user INTEGER, id_goods INTEGER)'''
+        self.execute(sql, commit=True)
+
+    def create_table_purchase(self):
+        sql = '''CREATE TABLE IF NOT EXISTS purchase 
+        (id_order INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT, phone_number TEXT, email TEXT,
+        shipping TEXT, address TEXT, goods TEXT)'''
         self.execute(sql, commit=True)
 
     def add_goods(self, goods: dict):
@@ -70,12 +77,19 @@ class DataBase:
         sql = '''UPDATE goods SET quantity = quantity + 1 WHERE id=?'''
         self.execute(sql, parameters, commit=True)
 
-    def set_count(self, id_item: int, increase: bool):
-        if increase:
-            sql = '''UPDATE goods SET quantity = quantity + 1 WHERE id=?'''
-        else:
-            sql = '''UPDATE goods SET quantity = quantity - 1 WHERE id=?'''
-        self.execute(sql, (id_item,))
+    def clear_basket(self, id_user):
+        parameters = (id_user,)
+        sql = '''DELETE FROM basket WHERE id_user=?'''
+        self.execute(sql, parameters, commit=True)
+
+    def add_purchase(self, id_user: int, order: dict, shipping: str):
+        sql = '''INSERT INTO purchase (name, phone_number, email, shipping, address, goods) 
+        VALUES (?, ?, ?, ?, ?, ?)'''
+        for goods in self.get_basket(id_user=id_user):
+            item = self.get_goods(id=int(goods[2]))
+            parameters = (order.get('name'), order.get('phone_number'), order.get('email'),
+                          shipping, str(order.get('shipping_address')), str(item[0][3]))
+            self.execute(sql, parameters, commit=True)
 
     @staticmethod
     def extract_kwargs(sql, parameters: dict) -> tuple:

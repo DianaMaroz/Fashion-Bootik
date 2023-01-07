@@ -7,7 +7,7 @@ from loader import dp
 @dp.callback_query_handler(main_menu.filter(menu='back'))
 async def com_start(call: CallbackQuery):
     photo = InputFile('images/logo.png')
-    name = call.message.chat.id
+    name = call.message.chat.full_name
     current_chat_id = call.message.chat.id
     current_message_id = call.message.message_id
     caption = f'{name}, добро пожаловать в онлайн бутик!'

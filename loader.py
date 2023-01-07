@@ -19,6 +19,7 @@ async def on_startup(_):
     try:
         db.create_table_goods()
         db.create_table_basket()
+        db.create_table_purchase()
         print('Подключение к БД успешное!')
     except sqlite3.OperationalError:
         print('Ошибка подключения к БД')
