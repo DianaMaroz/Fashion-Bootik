@@ -9,6 +9,8 @@ def create_basket_kb(id_user: int):
     my_basket = db.get_basket(id_user=id_user)
     btn_back = InlineKeyboardButton(text='Назад в главное меню', callback_data=main_menu.new(menu='back', item=''))
     btn_purchase = InlineKeyboardButton(text='Оформить заказ', callback_data=main_menu.new(menu='purchase', item=''))
+    btn_link = InlineKeyboardButton(text='Ссылка на YT', url='www.youtube.com')
+    btn_other = InlineKeyboardButton(text='Чё-то', )
     if len(my_basket) != 0:
         for i in range(len(my_basket)):
             id_order = str(my_basket[i][0])
@@ -26,4 +28,5 @@ def create_basket_kb(id_user: int):
         kb_goods.add(btn_purchase, btn_back)
     else:
         kb_goods.add(btn_back)
+        kb_goods.add(btn_link)
     return kb_goods

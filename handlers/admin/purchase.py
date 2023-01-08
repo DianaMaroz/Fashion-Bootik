@@ -3,7 +3,7 @@ import os
 from aiogram.types import Message, PreCheckoutQuery, SuccessfulPayment, ShippingOption, ShippingQuery, LabeledPrice
 from aiogram.types import CallbackQuery, InputFile, InputMediaPhoto, ContentType
 
-from keyboards import create_basket_kb
+# from keyboards import create_basket_kb
 from keyboards import main_menu, navigation
 from loader import dp, db
 from config import admins
@@ -13,7 +13,7 @@ EXPRESS_SHIPPING_OPTION.add(LabeledPrice(label='Упаковка', amount=39000)
 EXPRESS_SHIPPING_OPTION.add(LabeledPrice(label='Доставка', amount=56000))
 
 PR_SHIPPING_OPTION = ShippingOption(id='pr', title='Почта России')
-PR_SHIPPING_OPTION.add(LabeledPrice(label='Упаковка', amount=12000))
+PR_SHIPPING_OPTION.add(LabeledPrice('Упаковка', 12000))
 PR_SHIPPING_OPTION.add(LabeledPrice(label='Доставка', amount=45000))
 
 
@@ -26,14 +26,12 @@ async def purchase(call: CallbackQuery):
     id_user = call.message.chat.id
     all_goods = db.get_basket(id_user=id_user)
     prices = []
-    total_price = 0
     for i, item in enumerate(all_goods):
         goods = db.get_goods(id=all_goods[i][-1])
         name_goods = goods[0][3]
         price = int(goods[0][-1])
         prices.append(LabeledPrice(label=f'{name_goods}', amount=price*100))
-    name_goods = f'Сумму покупки: {total_price} rub'
-    await dp.bot.send_invoice(chat_id=call.message.chat.id,
+    await dp.bot.send_invoice(chat_id=id_user,
                               title='Оплата покупки!',
                               description='Подтвердите покупку товаров',
                               provider_token=os.getenv('P_TOKEN'),

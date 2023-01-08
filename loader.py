@@ -9,7 +9,7 @@ from config import db_path
 
 memory = MemoryStorage()
 
-bot = Bot(os.getenv('TOKEN'))
+bot = Bot(os.getenv('TOKEN'), parse_mode='HTML')
 dp = Dispatcher(bot, storage=memory)
 db = DataBase(db_path=db_path)
 
