@@ -5,9 +5,7 @@ from loader import dp, db
 
 
 @dp.callback_query_handler(navigation.filter(menu='goods'))
-async def navi_goods(call: CallbackQuery, user_basket: tuple, text_field: str):
-    # await call.answer(text=str(user_basket), show_alert=True)
-    # await call.answer(text=text_field, show_alert=True)
+async def navi_goods(call: CallbackQuery):
     current_id = int(call.data.split(':')[-1])
     current_item = call.data.split(':')[-2]
     cur_product = db.get_goods(g_type=current_item)

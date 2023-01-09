@@ -22,12 +22,11 @@ PICKUP_SHIPPING_OPTION.add(LabeledPrice(label='Самовывоз', amount=000))
 
 
 @dp.callback_query_handler(main_menu.filter(menu='purchase'))
-async def purchase(call: CallbackQuery):
+async def purchase(call: CallbackQuery, user_basket: tuple):
     id_user = call.message.chat.id
-    all_goods = db.get_basket(id_user=id_user)
     prices = []
-    for i, item in enumerate(all_goods):
-        goods = db.get_goods(id=all_goods[i][-1])
+    for i, item in enumerate(user_basket):
+        goods = db.get_goods(id=user_basket[i][-1])
         name_goods = goods[0][3]
         price = int(goods[0][-1])
         prices.append(LabeledPrice(label=f'{name_goods}', amount=price*100))

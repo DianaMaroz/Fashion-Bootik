@@ -5,7 +5,7 @@ from aiogram.dispatcher.filters.state import StatesGroup, State
 
 from loader import dp, db
 from aiogram.types import Message
-from keyboards import kb_g_type
+from keyboards import kb_g_type, kb_cancel_fsm
 from config import admins
 
 
@@ -19,14 +19,9 @@ class NewGoodsItem(StatesGroup):
 
 
 @dp.message_handler(commands=['add'], state=None)
-async def add_catch(message: Message):
-    access = False
-    for user_id in admins:
-        if message.from_user.id == user_id:
-            access = True
-            break
-    if access:
-        await message.answer('Введите название товара')
+async def add_catch(message: Message, admin: bool, state: FSMContext):
+    if admin:
+        await message.answer(text='Введите название товара', reply_markup=kb_cancel_fsm)
         await NewGoodsItem.name.set()
     else:
         await message.answer('Извините, у вас нет доступа к этой команде')
@@ -35,7 +30,7 @@ async def add_catch(message: Message):
 @dp.message_handler(state=NewGoodsItem.name)
 async def name_catch(message: Message, state: FSMContext):
     await state.update_data({'name': message.text})
-    await message.answer('Введите описание товара')
+    await message.answer(text='Введите описание товара', reply_markup=kb_cancel_fsm)
     await NewGoodsItem.next()
 
 
@@ -50,7 +45,7 @@ async def desc_catch(message: Message, state: FSMContext):
 async def type_catch(message: Message, state: FSMContext):
     if message.text in ['jacket', 'shirt', 'jeans', 'shoes']:
         await state.update_data({'g_type': message.text})
-        await message.answer('Введите фото товара')
+        await message.answer('Введите фото товара', reply_markup=kb_cancel_fsm)
         await NewGoodsItem.next()
     else:
         await message.answer('Выберите категорию из списка', reply_markup=kb_g_type)
@@ -59,14 +54,14 @@ async def type_catch(message: Message, state: FSMContext):
 @dp.message_handler(content_types='photo', state=NewGoodsItem.photo)
 async def photo_catch(message: Message, state: FSMContext):
     await state.update_data({'image': message.photo[0].file_id})
-    await message.answer('Введите количество товара')
+    await message.answer('Введите количество товара', reply_markup=kb_cancel_fsm)
     await NewGoodsItem.next()
 
 
 @dp.message_handler(state=NewGoodsItem.quantity)
 async def quantity_catch(message: Message, state: FSMContext):
     await state.update_data({'quantity': message.text})
-    await message.answer('Введите цену товара')
+    await message.answer('Введите цену товара', reply_markup=kb_cancel_fsm)
     await NewGoodsItem.next()
 
 

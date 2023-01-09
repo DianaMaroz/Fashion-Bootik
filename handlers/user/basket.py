@@ -20,15 +20,14 @@ async def add_to_basket(call: CallbackQuery):
 
 
 @dp.callback_query_handler(main_menu.filter(menu='basket'))
-async def user_basket(call: CallbackQuery):
+async def get_user_basket(call: CallbackQuery, user_basket: tuple):
     id_user = call.from_user.id
     current_message_id = call.message.message_id
-    my_basket = db.get_basket(id_user=id_user)
     content_basket = 'Содержимое вашей корзины:\n'
     total = 0
-    if len(my_basket) != 0:
-        for i in range(len(my_basket)):
-            id_goods = int(my_basket[i][-1])
+    if len(user_basket) != 0:
+        for i in range(len(user_basket)):
+            id_goods = int(user_basket[i][-1])
             goods = db.get_goods(id=id_goods)[0]
             content_basket += f'{i + 1}. {goods[3]}\n'
             total += float(goods[-1])
@@ -40,15 +39,15 @@ async def user_basket(call: CallbackQuery):
                                                           caption=content_basket),
                                     chat_id=id_user,
                                     message_id=current_message_id,
-                                    reply_markup=create_basket_kb(id_user))
+                                    reply_markup=create_basket_kb(id_user, user_basket))
 
 
 @dp.callback_query_handler(navigation.filter(menu='remove'))
-async def remove_from_basket(call: CallbackQuery):
+async def remove_from_basket(call: CallbackQuery, user_basket:tuple):
     id_goods = int(call.data.split(":")[-3])
     id_order = int(call.data.split(":")[-1])
     goods = db.get_goods(id=id_goods)
     name_goods = goods[0][3]
     await call.answer(f'Товар {name_goods} удален из корзины')
     db.remove_from_basket(id_order, id_goods)
-    await user_basket(call)
+    await get_user_basket(call, user_basket)

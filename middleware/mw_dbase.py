@@ -14,8 +14,12 @@ class AddBasket(BaseMiddleware):
                 break
         else:
             data['admin'] = False
-        data['text_field'] = 'Какой-то текст от Message'
 
     async def on_process_callback_query(self, call: CallbackQuery, data: dict):
         data['user_basket'] = db.get_basket(id_user=call.message.chat.id)
-        data['text_field'] = 'Какой-то текст от Callback'
+        for admin in admins:
+            if call.message.from_user.id == admin:
+                data['admin'] = True
+                break
+        else:
+            data['admin'] = False
